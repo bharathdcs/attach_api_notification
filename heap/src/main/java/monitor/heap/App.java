@@ -38,6 +38,8 @@ public class App
 			int port=Integer.parseInt(prop.getProperty("smtp_port"));
 			String username=prop.getProperty("smpt_user");
 			int threshold=Integer.parseInt(prop.getProperty("threshold"));
+			System.out.println("Threshold percent:"+threshold);
+			
 			String password=prop.getProperty("stmp_password");
 			String touser=prop.getProperty("email");
 			Attacher attacher=new Attacher(processId,threshold);

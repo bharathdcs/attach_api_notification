@@ -26,10 +26,11 @@ import com.sun.tools.attach.AttachNotSupportedException;
 import com.sun.tools.attach.VirtualMachine;
 import com.sun.tools.attach.VirtualMachineDescriptor;
 
-public class Attacher implements Listener {
+public class Attacher implements Producer {
 	private int processId;
 	private VirtualMachine virtualMachine=null;
 	private ArrayList<Consumer> consumers;
+	 private  boolean usernotified=false;
 	private int threshold;
 	 private final ScheduledExecutorService scheduler =
 		       Executors.newScheduledThreadPool(1);
@@ -110,15 +111,20 @@ public class Attacher implements Listener {
 						        int totalHeap=Integer.parseInt(cd.get("max").toString());
 						        int usedHeap=Integer.parseInt(cd.get("used").toString());
 						        System.out.println("Used memory:"+usedHeap/1024+"KB");
-						        int thresholdValue= totalHeap*(threshold/100);
+						        double thresholdPer=(double)threshold/100;
+						        System.out.println("calculated threshold ratio:"+thresholdPer);
+						        int thresholdValue= (int) Math.floor(totalHeap*thresholdPer);
 						        System.out.println("calculated threshold value:"+thresholdValue/1024+"KB");
-						       if(usedHeap>=thresholdValue)
+						       if(usedHeap>=thresholdValue&&usernotified==false)
 						       {
 						    	   for(Consumer eachConsumer:consumers)
 						    	   {
 						    		   eachConsumer.notify("Alert memory usage exceeded threhold");
 						    		   System.out.println("Memory usage exceeded");
 						    	   }
+						    	  
+						    	   usernotified=true;
+						    	   
 						    	   scheduler.shutdown();
 						    	   return;
 						    	   //System.out.println("Alert memory usage exceeded threhold");

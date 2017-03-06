@@ -18,10 +18,10 @@ public class Notifier implements Consumer{
 		Email email = new SimpleEmail();
 		email.setHostName(smtp_host);
 		email.setSmtpPort(smtp_port);
-		email.setAuthenticator(new DefaultAuthenticator("username", "password"));
+		email.setAuthenticator(new DefaultAuthenticator(username, password));
 		email.setSSLOnConnect(true);
 		try {
-			email.setFrom("user@gmail.com");
+			email.setFrom("bharathdcs@gmail.com");
 			email.setSubject("Comopnent memory exceeded threshold");
 			email.setMsg(message);
 			email.addTo(emailTo);

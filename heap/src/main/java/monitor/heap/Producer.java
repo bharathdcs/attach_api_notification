@@ -1,6 +1,6 @@
 package monitor.heap;
 
-public interface Listener {
+public interface Producer {
 	public void listen(Consumer consumer);
 
 }
